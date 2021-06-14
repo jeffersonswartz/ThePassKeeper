@@ -1,41 +1,46 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-
-    <div class="authBlock">
-      <h3>Sign In</h3>
-      <div class="formGroup">
-        <input type="text" class="formControl" placeholder="Username" #userName required>
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header class="login-header">
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field class="full-width-input">
+          <mat-label>Email</mat-label>
+          <input type="email" matInput #userName [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+            placeholder="mail@domain.com" />
+          <mat-error *ngIf="
+              emailFormControl.hasError('email') &&
+              !emailFormControl.hasError('required')
+            ">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" #userPassword>
+        </mat-form-field>
+        <div class="forgotPassword" routerLink="/forgot-password">Forgot password ?</div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions >
+      <div class="login-actions-container">
+        <button mat-raised-button color="primary" (click)="submitLogin(userName.value, userPassword.value)">Login</button>
+        <button mat-raised-button (click)="redirectToSignUp()">Sign up</button>
       </div>
-
-      <div class="formGroup">
-        <input type="password" class="formControl" placeholder="Password" #userPassword required>
-      </div>
-
-      <!-- Calling SignIn Api from AuthService -->
-      <div class="formGroup">
-        <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
-      </div>
-
-      <div class="formGroup">
-        <span class="or"><span class="orInner">Or</span></span>
-      </div>
-
-      <!-- Calling GoogleAuth Api from AuthService -->
-      <div class="formGroup">
-        <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
-          <i class="fab fa-google-plus-g"></i>
-          Log in with Google
+      <div class="other-options">Other Login Options</div>
+      <div>
+        <button class="button-style full-width-input" mat-raised-button (click)="authService.GoogleAuth()">
+          <div class="google-login">
+            <div class="google-icon"></div>
+            <div>Login with Google</div>
+          </div>
         </button>
       </div>
-
-      <div class="forgotPassword">
-        <span routerLink="/forgot-password">Forgot Password?</span>
-      </div>
-    </div>
-
-    <div class="redirectToLogin">
-      <span>Don't have an account?<span class="redirect" routerLink="/register-user"> Sign Up</span></span>
-    </div>
-
-  </div>
+      
+    </mat-card-actions>
+  </mat-card>
 </div>
